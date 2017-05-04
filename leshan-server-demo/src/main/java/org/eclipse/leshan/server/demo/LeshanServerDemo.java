@@ -382,6 +382,7 @@ public class LeshanServerDemo {
         ServletHolder objectSpecServletHolder = new ServletHolder(new ObjectSpecServlet(lwServer.getModelProvider()));
         root.addServlet(objectSpecServletHolder, "/api/objectspecs/*");
 
+<<<<<<< HEAD
         // Register a service to DNS-SD
         if (publishDNSSdServices) {
 
@@ -401,6 +402,7 @@ public class LeshanServerDemo {
             jmdns.registerService(coapSecureServiceInfo);
         }
 
+        lwServer.getRegistrationService().addListener(new TestRegistrationListener(lwServer));
         // Start Jetty & Leshan
         lwServer.start();
         server.start();
