@@ -100,6 +100,21 @@ public class TestClient {
         }
         return null;
     }
+    
+    public LwM2mResponse write(int oid, int iid, int rid, long value) {
+        DownlinkRequest<WriteResponse> request = new WriteRequest(oid, iid, rid, value);
+        try {
+            LwM2mResponse response = server.send(reg, request);
+            return response;
+        } catch (CodecException | InvalidResponseException
+                | RequestCanceledException | RequestRejectedException
+                | InterruptedException e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+        }
+        return null;
+    }
+
 
     
 }

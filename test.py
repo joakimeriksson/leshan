@@ -1,4 +1,4 @@
-import unittest, array
+import unittest, array, time
 
 class TestDevice(unittest.TestCase):
     global client
@@ -43,6 +43,16 @@ class TestDevice(unittest.TestCase):
     def test_object_with_opaque_read(self):
         r = client.readTLV("4711/0/")
         self.assertEqual(r.getCode().name(), "CONTENT")
+
+    def test_device_time_write(self):
+        r = client.write(3,0,13,1000)
+        self.assertEqual(r.getCode().name(), "CHANGED")
+        time.sleep(5)
+        r = client.read("3/0/13")
+        v = r.getContent().getValue().getTime()
+        self.assertTrue(v > 1000)
+        print "Time: ", v
+
 
 
 print "----------------------------------------"
