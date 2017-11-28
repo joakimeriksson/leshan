@@ -13,9 +13,9 @@ import org.python.core.*;
 
 public class TestRegistrationListener implements RegistrationListener {
 
-    
+
     LwM2mServer server;
-    
+
     public TestRegistrationListener(LwM2mServer server) {
         this.server = server;
     }
@@ -41,8 +41,9 @@ public class TestRegistrationListener implements RegistrationListener {
     }
     
     @Override
-    public void registered(Registration registration) {
-        startTest(registration);
+    public void registered(Registration reg, Registration previousReg,
+            Collection<Observation> previousObsersations) {
+        startTest(reg);
     }
 
     @Override
@@ -55,9 +56,10 @@ public class TestRegistrationListener implements RegistrationListener {
 
     @Override
     public void unregistered(Registration registration,
-            Collection<Observation> observations, boolean expired) {
+                             Collection<Observation> observations,
+                             boolean expired,
+                             Registration registration2) {
         // TODO Auto-generated method stub
-        System.out.println("Node de-registered: " + registration.getEndpoint());        
-    }
+        System.out.println("Node de-registered: " + registration.getEndpoint());    }
 
 }
