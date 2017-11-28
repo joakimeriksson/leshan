@@ -25,7 +25,7 @@ class TestDevice(unittest.TestCase):
 
     def test_manufacturer_execute(self):
         r = client.execute("3/0/0")
-        self.assertEqual(r.getCode().name(), "CHANGED")
+        self.assertEqual(r.getCode().name(), "METHOD_NOT_ALLOWED")
 
     def test_reboot_read(self):
         r = client.read("3/0/4")
@@ -47,7 +47,7 @@ class TestDevice(unittest.TestCase):
     def test_device_time_write(self):
         r = client.write(3,0,13,1000)
         self.assertEqual(r.getCode().name(), "CHANGED")
-        time.sleep(5)
+        time.sleep(4.9)
         r = client.read("3/0/13")
         v = r.getContent().getValue().getTime()
         self.assertTrue(v > 1000)
