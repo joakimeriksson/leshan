@@ -17,9 +17,11 @@
  *******************************************************************************/
 package org.eclipse.leshan.server.demo;
 
+import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
+import java.io.InputStreamReader;
 import java.math.BigInteger;
 import java.net.BindException;
 import java.net.InetAddress;
@@ -54,7 +56,9 @@ import org.apache.commons.cli.DefaultParser;
 import org.apache.commons.cli.HelpFormatter;
 import org.apache.commons.cli.Options;
 import org.apache.commons.cli.ParseException;
+import org.apache.logging.log4j.LogManager;
 import org.eclipse.californium.core.network.config.NetworkConfig;
+import org.eclipse.californium.scandium.DTLSConnector;
 import org.eclipse.jetty.server.Server;
 import org.eclipse.jetty.servlet.ServletHolder;
 import org.eclipse.jetty.webapp.WebAppContext;
@@ -83,6 +87,10 @@ import org.slf4j.LoggerFactory;
 import redis.clients.jedis.Jedis;
 import redis.clients.jedis.JedisPool;
 import redis.clients.util.Pool;
+
+import java.util.logging.Level;
+import org.python.util.PythonInterpreter; 
+
 
 public class LeshanServerDemo {
 
@@ -382,7 +390,6 @@ public class LeshanServerDemo {
         ServletHolder objectSpecServletHolder = new ServletHolder(new ObjectSpecServlet(lwServer.getModelProvider()));
         root.addServlet(objectSpecServletHolder, "/api/objectspecs/*");
 
-<<<<<<< HEAD
         // Register a service to DNS-SD
         if (publishDNSSdServices) {
 
@@ -406,6 +413,19 @@ public class LeshanServerDemo {
         // Start Jetty & Leshan
         lwServer.start();
         server.start();
-        LOG.info("Web server started at {}.", server.getURI());
+
+        LOG.info("Web server started at {}.", server.getURI());        
+                
+        /* */
+        PythonInterpreter interp = new PythonInterpreter();
+        BufferedReader bin = new BufferedReader(new InputStreamReader(System.in));
+        String line;
+        while((line = bin.readLine()) != null) {
+            try {
+            interp.exec(line);
+            } catch (Exception e) {
+                e.printStackTrace(System.err);
+            }
+        }
     }
 }

@@ -1,5 +1,6 @@
 package org.eclipse.leshan.server.demo;
 
+import java.io.File;
 import java.util.Collection;
 
 import org.eclipse.leshan.core.observation.Observation;
@@ -28,10 +29,15 @@ public class TestRegistrationListener implements RegistrationListener {
                 System.out.println("Node registered: " + registration.getEndpoint());
                 System.out.println("Starting tests...");
                 try {
+                    String fname = "pytests/" + registration.getEndpoint() + ".py";
+                    File f = new File(fname);
                     PythonInterpreter interp = new PythonInterpreter();
                     interp.exec("import sys");
                     interp.set("client", new TestClient(registration, server));
-                    interp.execfile("test.py");                    
+                    if (!f.exists()) {
+                        fname = "pytests/test-device.py";
+                    }
+                    interp.execfile(fname);
                 } catch (Exception e) {
                     e.printStackTrace();
                 }
