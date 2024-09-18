@@ -124,6 +124,8 @@ public class LeshanServerDemo {
                 jmdns.registerService(coapSecureServiceInfo);
             }
 
+            lwm2mServer.getRegistrationService().addListener(new TestRegistrationListener(lwm2mServer));
+
             // Start servers
             lwm2mServer.start();
             webServer.start();
