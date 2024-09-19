@@ -1,4 +1,12 @@
-import unittest, array, time
+print("Before import")
+import array
+import time
+print("Time: ", time.time())
+print("Before unittest import", client)
+
+import unittest
+print("After imports")
+
 
 class TestDevice(unittest.TestCase):
     global client
@@ -51,21 +59,21 @@ class TestDevice(unittest.TestCase):
         r = client.read("3/0/13")
         v = r.getContent().getValue().getTime()
         self.assertTrue(v > 1000)
-        print "Time: ", v
+        print("Time: ", v)
 
 
 
-print "----------------------------------------"
-print "LWM2M Tester - name of client: ", client.endpoint
-print "----------------------------------------"
+print("----------------------------------------")
+print("LWM2M Tester - name of client: ", client.endpoint)
+print("----------------------------------------")
 
-r = client.read("3/0/0");
-print "Code:", r.getCode().getName()
-print "Objects: ", client.links
-print "Read  Manufacturer => ", client.read("3/0/0")
-print "Read  Device => ", client.readTLV("3/0/")
-print "Write Manufacturer => ", client.write(3, 0, 0, "abc")
-print "Exe   Manufacturer => ", client.execute("3/0/0")
+r = client.read("3/0/0")
+print("Code:", r.getCode().getName())
+print("Objects: ", client.links)
+print("Read  Manufacturer => ", client.read("3/0/0"))
+print("Read  Device => ", client.readTLV("3/0/"))
+print("Write Manufacturer => ", client.write(3, 0, 0, "abc"))
+print("Exe   Manufacturer => ", client.execute("3/0/0"))
 
 suite = unittest.TestLoader().loadTestsFromTestCase(TestDevice)
 unittest.TextTestRunner(verbosity=2).run(suite)

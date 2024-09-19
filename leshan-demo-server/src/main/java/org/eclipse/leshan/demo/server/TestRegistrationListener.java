@@ -16,6 +16,8 @@
 package org.eclipse.leshan.demo.server;
 
 import java.io.File;
+import java.nio.file.Files;
+import java.nio.file.Paths;
 import java.util.Collection;
 
 import org.eclipse.leshan.core.observation.Observation;
@@ -23,7 +25,7 @@ import org.eclipse.leshan.server.LeshanServer;
 import org.eclipse.leshan.server.registration.Registration;
 import org.eclipse.leshan.server.registration.RegistrationListener;
 import org.eclipse.leshan.server.registration.RegistrationUpdate;
-import org.python.util.PythonInterpreter;
+import org.graalvm.polyglot.Context;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -46,13 +48,19 @@ public class TestRegistrationListener implements RegistrationListener {
                 try {
                     String fname = "pytests/" + registration.getEndpoint() + ".py";
                     File f = new File(fname);
-                    PythonInterpreter interp = new PythonInterpreter();
-                    interp.exec("import sys");
-                    interp.set("client", new TestClient(registration, server));
-                    if (!f.exists()) {
-                        fname = "pytests/test-device.py";
+                    // Create a polyglot context for running Python code
+                    try (Context context = Context.newBuilder("python").allowAllAccess(true).build()) {
+                        // Set "client" variable to be accessible in Python
+                        TestClient client = new TestClient(registration, server);
+                        context.getBindings("python").putMember("client", client);
+
+                        if (!f.exists()) {
+                            fname = "pytests/test-device.py";
+                        }
+                        context.eval("python", "import sys; print(sys.path)");
+                        // Execute the Python script
+                        context.eval("python", new String(Files.readAllBytes(Paths.get(fname))));
                     }
-                    interp.execfile(fname);
                 } catch (Exception e) {
                     e.printStackTrace();
                 }

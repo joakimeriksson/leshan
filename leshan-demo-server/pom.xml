@@ -27,7 +27,9 @@ Contributors:
   <artifactId>leshan-demo-server</artifactId>
   <name>leshan-demo-server</name>
   <description>A LWM2M demonstration server running an embedded Jetty server</description>
-
+  <properties>
+    <graalvm.version>24.1.0</graalvm.version>
+  </properties>
   <dependencies>
     <dependency>
       <groupId>org.jmdns</groupId>
@@ -69,11 +71,33 @@ Contributors:
       <groupId>commons-io</groupId>
       <artifactId>commons-io</artifactId>
     </dependency>
+    <!-- GraalVM Python Language -->
     <dependency>
-      <groupId>org.python</groupId>
-      <artifactId>jython-standalone</artifactId>
-      <version>2.7.4</version>
+      <groupId>org.graalvm.python</groupId>
+      <artifactId>python-language</artifactId>
+      <version>${graalvm.version}</version>
+      <scope>runtime</scope>
     </dependency>
+    <!-- GraalVM Python Launcher -->
+    <dependency>
+      <groupId>org.graalvm.python</groupId>
+      <artifactId>python-launcher</artifactId>
+      <version>${graalvm.version}</version>
+      <scope>runtime</scope>
+    </dependency>
+    <!-- GraalVM SDK -->
+    <dependency>
+      <groupId>org.graalvm.sdk</groupId>
+      <artifactId>graal-sdk</artifactId>
+      <version>${graalvm.version}</version>
+    </dependency>
+    <!-- Truffle API -->
+    <dependency>
+      <groupId>org.graalvm.truffle</groupId>
+      <artifactId>truffle-api</artifactId>
+      <version>${graalvm.version}</version>
+    </dependency>
+
     <!-- runtime dependencies -->
     <dependency>
       <groupId>ch.qos.logback</groupId>
