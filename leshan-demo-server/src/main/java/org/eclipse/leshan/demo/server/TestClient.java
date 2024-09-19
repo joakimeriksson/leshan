@@ -15,6 +15,8 @@
  *******************************************************************************/
 package org.eclipse.leshan.demo.server;
 
+import java.util.Date;
+
 import org.eclipse.leshan.core.link.Link;
 import org.eclipse.leshan.core.node.codec.CodecException;
 import org.eclipse.leshan.core.request.ContentFormat;
@@ -112,6 +114,20 @@ public class TestClient {
 
     public LwM2mResponse write(int oid, int iid, int rid, long value) {
         DownlinkDeviceManagementRequest<WriteResponse> request = new WriteRequest(oid, iid, rid, value);
+        try {
+            LwM2mResponse response = server.send(reg, request);
+            return response;
+        } catch (CodecException | InvalidResponseException | RequestCanceledException | RequestRejectedException
+                | InterruptedException e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+        }
+        return null;
+    }
+
+    public LwM2mResponse writeDate(int objectId, int objectInstanceId, int resourceId, long value) {
+        DownlinkDeviceManagementRequest<WriteResponse> request = new WriteRequest(objectId, objectInstanceId,
+                resourceId, new Date(value));
         try {
             LwM2mResponse response = server.send(reg, request);
             return response;
