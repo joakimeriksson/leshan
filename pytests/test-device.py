@@ -45,7 +45,7 @@ class TestDevice(unittest.TestCase):
         self.assertEqual(r.getCode().getName(), "CONTENT")
 
     def test_device_time_write(self):
-        r = client.write(3,0,13,1000)
+        r = client.writeDate(3,0,13,1000)
         self.assertEqual(r.getCode().getName(), "CHANGED")
         time.sleep(4.9)
         r = client.read("3/0/13")
